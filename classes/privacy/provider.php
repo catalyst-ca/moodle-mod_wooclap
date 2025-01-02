@@ -25,36 +25,20 @@ namespace mod_wooclap\privacy;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
 use core_privacy\local\request\contextlist;
-use core_privacy\local\request\userlist;
+use core_privacy\local\request\helper;
+use core_privacy\local\request\transform;
 use core_privacy\local\request\writer;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/filelib.php');
 
-// The Privacy API implements an interface which is not present in older versions of Moodle
-// So we polyfill it.
-
-if (interface_exists('\core_privacy\local\request\userlist')) {
-    /**
-     * Interface for Wooclap UserList, extending core_privacy's UserList.
-     */
-    interface wooclap_userlist extends \core_privacy\local\request\userlist {
-    }
-} else {
-    /**
-     * Interface for Wooclap UserList
-     */
-    interface wooclap_userlist {
-    };
-}
-
 /**
  * Provider class for userlist.
  */
 class provider implements
         \core_privacy\local\metadata\provider,
-        wooclap_userlist,
+        \core_privacy\local\request\core_userlist_provider,
         \core_privacy\local\request\plugin\provider {
 
     /**
@@ -68,6 +52,10 @@ class provider implements
         $collection->add_external_location_link('wooclap_server', [
             'userid' => 'privacy:metadata:wooclap_server:userid',
         ], 'privacy:metadata:wooclap_server');
+
+        $collection->add_database_table('wooclap_completion', [
+            'userid' => 'privacy:metadata:wooclap_completion:userid',
+        ], 'privacy:metadata:wooclap_completion');
 
         return $collection;
     }
@@ -120,7 +108,7 @@ class provider implements
      *
      * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
      */
-    public static function get_users_in_context(userlist $userlist) {
+    public static function get_users_in_context(\core_privacy\local\request\userlist $userlist) {
 
         $context = $userlist->get_context();
 
@@ -233,7 +221,7 @@ class provider implements
      *
      * @param   approved_userlist       $userlist The approved context and user information to delete information for.
      */
-    public static function delete_data_for_users(approved_userlist $userlist) {
+    public static function delete_data_for_users(\core_privacy\local\request\approved_userlist $userlist) {
         debugging('The Wooclap plugin does not currently support the deleting of user data. ', DEBUG_DEVELOPER);
     }
 
