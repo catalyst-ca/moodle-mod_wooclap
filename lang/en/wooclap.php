@@ -67,6 +67,8 @@ $string['wooclap:addinstance'] = 'Add a Wooclap activity to a course';
 
 $string['privacy:metadata:wooclap_server'] = 'In order to integrate with Wooclap, user data needs to be exchanged.';
 $string['privacy:metadata:wooclap_server:userid'] = 'The user id is sent from Moodle to allow you to access your data on Wooclap.';
+$string['privacy:metadata:wooclap_completion'] = 'Keeps track of individual completion for Wooclap activities.';
+$string['privacy:metadata:wooclap_completion:userid'] = 'The user id is stored to keep track of individual completion for Wooclap activities.';
 
 $string['error-noeventid'] = 'Could not determine event id';
 $string['error-auth-nosession'] = 'Missing session in authentication';
