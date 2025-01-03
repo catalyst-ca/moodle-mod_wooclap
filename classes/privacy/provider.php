@@ -122,7 +122,7 @@ class provider implements
         ];
 
         // Course authors.
-        $sql = "SELECT w.authorid
+        $sql = "SELECT w.authorid as userid
               FROM {course_modules} cm
               JOIN {modules} m ON m.id = cm.module AND m.name = :modulename
               JOIN {wooclap} w ON w.id = cm.instance
@@ -130,10 +130,10 @@ class provider implements
         $userlist->add_from_sql('userid', $sql, $params);
 
         // Graded students.
-        $sql = "SELECT wc.userid
+        $sql = "SELECT wc.userid as userid
               FROM {course_modules} cm
               JOIN {modules} m ON m.id = cm.module AND m.name = :modulename
-              JOIN {wooclap} f ON w.id = cm.instance
+              JOIN {wooclap} w ON w.id = cm.instance
               JOIN {wooclap_completion} wc ON wc.id = w.id
              WHERE cm.id = :instanceid";
         $userlist->add_from_sql('userid', $sql, $params);
